@@ -31,7 +31,12 @@
             <div class="form-group row">
                 <label for="exercise-videos">Videos:</label>
                 <input name="relatedVideo" class="form-control" ng-model="exercise.videos" placeholder="Add a related youtube video identified." required />
-                <div ng-repeat="video in exercise.related.videos track by $index">
+                <ul>
+                    <li ng-repeat="video in exercise.related.videos">
+                        {{video}}
+                    </li>
+                </ul>
+                <div ng-repeat="video in exercise.related.videos">
                     {{video}}
                 </div>  <!--               
                 <div class="form-group form-inline" ng-class="{'has-error':videoForm.relatedVideo.$invalid}"></div>

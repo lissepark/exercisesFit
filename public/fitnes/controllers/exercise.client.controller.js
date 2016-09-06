@@ -27,6 +27,7 @@ angular.module('WorkoutBuilder').controller('ExerciseListController', ['$scope',
 angular.module('WorkoutBuilder').controller('ExerciseDetailController', ['$scope', 'ExerciseBuilderService', 'selectedExercise',
   '$routeParams',function($scope, ExerciseBuilderService, selectedExercise,$routeParams) {
     //$scope.selected = {};
+
 /*
   $scope.removeExercise = function (exercise) {
         ExerciseBuilderService.removeExercise(exercise);
@@ -79,11 +80,12 @@ angular.module('WorkoutBuilder').controller('ExerciseDetailController', ['$scope
   };
 
   $scope.addVideo = function(){
-    ExerciseBuilderService.addVideo($scope.exercise.videos);
+    $scope.exercise.related.videos.push($scope.exercise.videos);
   };
 
   var init = function () {
     $scope.exercise = selectedExercise; // Resolved workout
   };
   init();
+  $scope.exercise.related.videos = [];
 }]);

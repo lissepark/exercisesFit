@@ -9,6 +9,7 @@ angular.module('fitnes').controller('FitnesController', ['$scope', '$interval', 
 		this.description = args.description;
 		this.image = args.image;
 		this.related = {};
+        //this.related.videos = [];
 		this.related.videos = args.videos;
 		this.nameSound = args.nameSound;
 		this.procedure=args.procedure;
