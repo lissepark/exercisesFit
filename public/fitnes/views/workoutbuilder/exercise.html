@@ -1,0 +1,124 @@
+﻿<div id="workout-container">
+    <div class="row">
+        <h2 class="col-sm-8 col-sm-offset-1">{{exercise.title||'Exercise Title'}} {{formExercise.$dirty?'*':''}}
+            <!-- <span ng-show="canDeleteWorkout()" class="pull-right glyphicon glyphicon-trash text-danger" title="Delete Workout" ng-confirm="deleteWorkout()" ng-confirm-message="Are you sure you want to delete this workout ?"></span> -->
+        </h2>
+    </div>
+    <form class="row" name="formExercise" novalidate>
+        
+        <div id="workout-data" class="col-sm-3">
+            <div class="form-group row" ng-class="{'has-error':formExercise.exerciseName.$invalid}">
+                <label for="workout-name">Name:</label>
+                <input type="text" name="exerciseName" class="form-control" id="workout-name" placeholder="Enter exercise name. Must be unique." ng-model="exercise.name" ng-pattern="/^[A-Za-z0-9]{1,15}$/" required>
+                <label ng-show="hasError(formExercise.exerciseName,formExercise.exerciseName.$error.required)" class="text-danger">Exercise name is required and it should be unique.</label>
+                <label ng-show="(submitted || formExercise.exerciseName.$dirty) && formExercise.exerciseName.$error.pattern" class="text-danger">Only alpha numberic values are allowed in exercise name with max length 15.</label>
+            </div>
+            <div class="form-group row" ng-class="{'has-error':formExercise.title.$invalid}">
+                <label for="workout-title">Title:</label>
+                <input type="text" name="ExerciseTitle" class="form-control" id="workout-title" placeholder="What would be the exercise title?" ng-model="exercise.title" ng-minlength="5" ng-maxlength="20" required>
+                <label ng-show="hasError(formExercise.title,formExercise.title.$error.required)" class="text-danger">Exercise title is required.</label>
+                <label ng-show="formExercise.title.$dirty && (formExercise.title.$error.minlength || formExercise.title.$error.maxlength)" class="text-danger">Title should be between 5 to 20 character long.</label>
+            </div>
+            <div class="form-group row">
+                <label for="workout-description">Description:</label>
+                <textarea name="description" class="form-control" id="workout-description" placeholder="Enter workout description." ng-model="exercise.description"></textarea>
+            </div>
+            <div class="form-group row">
+                <label for="workout-image">Image:</label>
+                <textarea name="image" class="form-control" id="image" placeholder="Enter exercise image path." ng-model="exercise.image"></textarea>
+            </div>
+
+            <div class="form-group row">
+                <label for="exercise-videos">Videos:</label>
+                <input name="relatedVideo" class="form-control" ng-model="exercise.videos" placeholder="Add a related youtube video identified." required />
+                <div ng-repeat="video in exercise.related.videos track by $index">
+                    {{video}}
+                </div>  <!--               
+                <div class="form-group form-inline" ng-class="{'has-error':videoForm.relatedVideo.$invalid}"></div>
+                <label ng-show="hasError(videoForm.relatedVideo,videoForm.relatedVideo.$error.required)" ng-class="{'text-danger': videoForm.relatedVideo.$error.required}">Video identifier is required.</label>-->
+                <button ng-click="addVideo()" class="btn btn-primary">Add Video</button>
+            </div>
+            <!--
+            <div class="form-group row">
+                <label for="workout-nameSound">Sound:</label>
+                <textarea name="sound" class="form-control" id="sound" placeholder="Enter exercise sound file path." ng-model="exercise.nameSound"></textarea>
+            </div>
+            <div class="form-group row">
+                <label for="workout-videos">Videos:</label>
+                <textarea name="videos" class="form-control" id="videos" placeholder="Enter videos file path." ng-model="exercise.videos"></textarea>
+            </div>
+            <div class="form-group row">
+                <label for="workout-procedure">Procedure:</label>
+                <textarea name="procedure" class="form-control" id="workout-procedure" placeholder="Enter exercise procedure description." ng-model="exercise.procedure"></textarea>
+            </div>
+            -->
+            
+            <div class="row">            
+                <button class="btn pull-right btn-block" ng-class="{'btn-default':formExercise.$valid,
+                    'btn-warning':!formExercise.$valid}" ng-click="save()" 
+                    popover="{{formExercise.$invalid ? 'The form has errors.' : null}}" popover-trigger="mouseenter">
+                    Save
+                </button>
+                <button class="btn btn-primary pull-right" ng-click="reset()">Reset</button>
+            </div>            
+        </div>
+       
+    </form>
+</div>
+<script type="text/ng-template" id="workout-exercise-tile">
+/*
+    <div class="exercise tile">
+	    <div class="title">
+            {{exercise.details.title}}
+            <div class="pull-right" ng-click="removeExercise(exercise)"><span class="glyphicon glyphicon-trash"></span></div>
+        </div>
+        <div class="index"><span>{{$index+1}}</span></div>
+		<div class="main">
+			<div class="image">
+				<img ng-src="{{exercise.details.image ? exercise.details.image : '/img/running.png'}}"/>
+			</div>
+            <div class="details">
+                <ng-form name="formDuration">
+                    <select class="select-duration form-control" name="duration" ng-model="exercise.duration" ng-options="duration.value as duration.title for duration in durations">
+                    </select>
+                    <label ng-show="hasError(formDuration.duration,formDuration.duration.$error.required)"
+                        class="text-danger">Time duration is required.
+                    </label>
+                </ng-form>
+            </div>
+		</div>
+        <div class="order">
+            <button class="btn btn-info" ng-click="moveExerciseTo(exercise,0)"><span class="glyphicon glyphicon-upload"></span></button>
+            <button class="btn btn-info" ng-click="moveExerciseTo(exercise,$index-1)"><span class="glyphicon glyphicon-chevron-up"></span></button>
+            <button class="btn btn-info" ng-click="moveExerciseTo(exercise,$index+1)"><span class="glyphicon glyphicon-chevron-down"></span></button>
+            <button class="btn btn-info" ng-click="moveExerciseTo(exercise,workout.exercises.length-1)"><span class="glyphicon glyphicon-download"></span></button>
+        </div>
+    </div>
+    */
+</script>
+
+<!--
+advisable to use ng-options:
+
+<select ... name="duration" ng-model="exercise.duration"
+ng-options="duration.value as duration.title for duration in
+durations"></select>
+
+.. ng-options="duration.title for duration in durations"
+
+$scope.durations = [{ title: "15 seconds", value: 15 },
+{ title: "30 seconds", value: 30 }, ...]
+
+[selected] as [label] for [value] in array
+
+but also we can use:
+
+<select ... ng-model="exercise.duration">
+<option value="{{duration.value}}"
+label="{{duration.title}}"
+ng-repeat="duration in durations"
+ng-selected="exercise.duration==duration.value">
+{{duration.title}}
+</option>
+</select>
+-->
