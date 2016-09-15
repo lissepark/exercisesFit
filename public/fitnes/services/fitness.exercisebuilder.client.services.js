@@ -11,6 +11,7 @@ angular.module('WorkoutBuilder').factory("ExerciseBuilderService", ['WorkoutServ
             }
             else {
                 buildingExercise = new Exercise({});
+                buildingExercise.related.videos = [];
                 newExercise = true;
             }
             return buildingExercise;
@@ -30,10 +31,10 @@ angular.module('WorkoutBuilder').factory("ExerciseBuilderService", ['WorkoutServ
             newExercise = false;
             return exercise;
         };
-
-        //service.addVideo = function () {
-        //    buildingExercise.related.videos.push("");
-        //};
-
+/*
+        service.addVideo = function () {
+            buildingExercise.related.videos.push("");
+        };
+*/
         return service;
     }]);

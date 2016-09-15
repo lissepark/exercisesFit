@@ -27,7 +27,6 @@ angular.module('WorkoutBuilder').controller('ExerciseListController', ['$scope',
 angular.module('WorkoutBuilder').controller('ExerciseDetailController', ['$scope', 'ExerciseBuilderService', 'selectedExercise',
   '$routeParams',function($scope, ExerciseBuilderService, selectedExercise,$routeParams) {
     //$scope.selected = {};
-
 /*
   $scope.removeExercise = function (exercise) {
         ExerciseBuilderService.removeExercise(exercise);
@@ -75,17 +74,23 @@ angular.module('WorkoutBuilder').controller('ExerciseDetailController', ['$scope
 */
   $scope.reset = function () {
     $scope.exercise = ExerciseBuilderService.startExerciseBuilding($routeParams.id);
-    $scope.formWorkout.$setPristine();
+    $scope.formExercise.$setPristine();
     $scope.submitted = false;
   };
 
   $scope.addVideo = function(){
-    $scope.exercise.related.videos.push($scope.exercise.videos);
+    $scope.exercise.related.videos.push($scope.videos);
+    //ExerciseBuilderService.addVideo($scope.formExercise.videos);
+  };
+
+  $scope.showFileName = function() {
+    $scope.nameFile = $scope.formExercise.myFile;
+    $scope.exercise.image = $scope.nameFile.value;
   };
 
   var init = function () {
     $scope.exercise = selectedExercise; // Resolved workout
   };
   init();
-  $scope.exercise.related.videos = [];
+
 }]);
