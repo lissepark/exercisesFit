@@ -1,5 +1,6 @@
-angular.module('WorkoutBuilder').factory("ExerciseBuilderService", ['WorkoutService', 'Exercise', 
-    function (WorkoutService, Exercise) {
+angular.module('WorkoutBuilder').factory("ExerciseBuilderService", ['$resource','Exercises','$routeParams',
+    '$location','WorkoutService', 'Exercise',
+    function($resource, Exercises, $routeParams, $location, WorkoutService, Exercise) {
         var service = {};
         var buildingExercise;
         var newExercise;
@@ -10,8 +11,8 @@ angular.module('WorkoutBuilder').factory("ExerciseBuilderService", ['WorkoutServ
                 newExercise = false;
             }
             else {
-                buildingExercise = new Exercise({});
-                buildingExercise.related.videos = [];
+                buildingExercise = new Exercises({});
+                //buildingExercise.related.videos = [];
                 newExercise = true;
             }
             return buildingExercise;
@@ -29,6 +30,12 @@ angular.module('WorkoutBuilder').factory("ExerciseBuilderService", ['WorkoutServ
             var exercise = newExercise ? WorkoutService.addExercise(buildingExercise):
             WorkoutService.updateExercise(buildingExercise);
             newExercise = false;
+            buildingExercise.$save(function(response){
+                $location.path('api/exercises');
+            }, function(errorResponse){
+                //$scope.error = errorResponse.data.message;
+            });
+
             return exercise;
         };
 /*

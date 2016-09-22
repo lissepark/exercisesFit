@@ -24,8 +24,8 @@ angular.module('WorkoutBuilder').controller('ExerciseListController', ['$scope',
       init();
   }]);
 
-angular.module('WorkoutBuilder').controller('ExerciseDetailController', ['$scope', 'ExerciseBuilderService', 'selectedExercise',
-  '$routeParams',function($scope, ExerciseBuilderService, selectedExercise,$routeParams) {
+angular.module('WorkoutBuilder').controller('ExerciseDetailController', ['$scope','$location','Exercises', 'ExerciseBuilderService', 'selectedExercise',
+  '$routeParams',function($scope, $location, Exercises, ExerciseBuilderService, selectedExercise,$routeParams) {
     //$scope.selected = {};
 /*
   $scope.removeExercise = function (exercise) {
@@ -60,12 +60,28 @@ angular.module('WorkoutBuilder').controller('ExerciseDetailController', ['$scope
     $scope.formWorkout.exerciseCount.$setValidity("count", newValue > 0);
   }});
 */
-  $scope.save = function () {
-    $scope.submitted = true; // Will force validations
-    if ($scope.formExercise.$invalid) return;
-    $scope.exercise = ExerciseBuilderService.saveExercise();
-    $scope.formExercise.$setPristine(); //mark the form pristine after persisting the data to server on save
-    $scope.submitted = false;
+  $scope.create = function () {
+    //$scope.submitted = true; // Will force validations
+    //if ($scope.formExercise.$invalid) return;
+    //$scope.exercise = ExerciseBuilderService.saveExercise();
+    //$scope.formExercise.$setPristine(); //mark the form pristine after persisting the data to server on save
+    //$scope.submitted = false;
+    $scope.exercise = new Exercises({
+      name: this.exercise.name,
+      title: this.exercise.title,
+      description: this.exercise.description,
+      image: this.exercise.image,
+      related: {},
+      videos: this.exercise.related.videos,
+      nameSound: this.exercise.nameSound,
+      procedure: this.exercise.procedure
+    });
+    //$scope.exercise.related.videos = [];
+    $scope.exercise.$save(function(response){
+        $location.path('builder/');
+    }, function(errorResponse){
+        //$scope.error = errorResponse.data.message;
+    });
   };
 /*
   $scope.hasError = function (modelController, error) {
@@ -83,6 +99,11 @@ angular.module('WorkoutBuilder').controller('ExerciseDetailController', ['$scope
     //ExerciseBuilderService.addVideo($scope.formExercise.videos);
   };
 
+  $scope.deleteVideo = function(index){
+    $scope.exercise.related.videos.splice(index,1);
+    //ExerciseBuilderService.addVideo($scope.formExercise.videos);
+  };
+
   $scope.showFileName = function() {
     $scope.nameFile = $scope.formExercise.myFile;
     $scope.exercise.image = $scope.nameFile.value;
@@ -90,6 +111,8 @@ angular.module('WorkoutBuilder').controller('ExerciseDetailController', ['$scope
 
   var init = function () {
     $scope.exercise = selectedExercise; // Resolved workout
+    $scope.exercise.related = {};
+    $scope.exercise.related.videos = [];
   };
   init();
 

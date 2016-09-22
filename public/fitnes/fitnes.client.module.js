@@ -1,7 +1,6 @@
 angular.module('fitnes', ['ngRoute','ngSanitize','ngAnimate','mediaPlayer','ui.bootstrap','LocalStorageModule',
     'WorkoutBuilder','ExerciseBuilder','ngMessages']);
-angular.module('fitnes').config(['$routeProvider','$sceDelegateProvider',
-	function ($routeProvider,$sceDelegateProvider) {
+angular.module('fitnes').config(['$routeProvider','$sceDelegateProvider',function($routeProvider, $sceDelegateProvider) {
 	$routeProvider.when('/start', {
 		templateUrl: 'fitnes/views/start.html'
 	}).when('/fitness', {
@@ -49,7 +48,7 @@ angular.module('fitnes').config(['$routeProvider','$sceDelegateProvider',
         topNav: 'fitnes/views/workoutbuilder/top-nav.html',
         controller: 'ExerciseDetailController',
         resolve: {
-            selectedExercise: ['ExerciseBuilderService', function (ExerciseBuilderService) {
+            selectedExercise: ['ExerciseBuilderService', function(ExerciseBuilderService) {
                 var exercise = ExerciseBuilderService.startExerciseBuilding();
                 return exercise;
             }]
@@ -60,7 +59,7 @@ angular.module('fitnes').config(['$routeProvider','$sceDelegateProvider',
         controller: 'ExerciseDetailController',
         resolve: {
             selectedExercise: ['ExerciseBuilderService', '$route','$location',
-            function (ExerciseBuilderService, $route, $location) {
+            function(ExerciseBuilderService, $route, $location) {
                 var exercise = ExerciseBuilderService.startExerciseBuilding($route.current.params.id);
                 if (!exercise) {$location.path('builder/exercises')};
                 return exercise;

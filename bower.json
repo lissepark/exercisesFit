@@ -4,7 +4,7 @@
   "dependencies": {
     "angular": "^1.5.7",
     "angular-route": "^1.5.7",
-    "angular-resource": "^1.5.7",
+    "angular-resource": "^1.5.8",
     "angular-mocks": "^1.5.7",
     "angular-sanitize": "^1.5.7",
     "angular-media-player": "^0.5.8",
