@@ -37,6 +37,15 @@ exports.list = function(req, res) {
 };
 
 // Create a new controller method that returns an existing article
+exports.findOneExercise = function(req, res, next, exerciseId) {
+	Exercise.findOne({'_id':exerciseId}, function(err, exercise) {
+		if (err) return next(err);
+		if (!exercise) return next(new Error('Failed to load exercise '+ exerciseId));
+		req.exercise = exercise;
+		next();
+	});
+};
+
 exports.read = function(req, res) {
 	res.json(req.exercise);
 };

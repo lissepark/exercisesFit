@@ -48,11 +48,11 @@ input[type="checkbox"].input-validation-error {
 
 /*styles for top nav bar - start*/
 .navbar-default.top-navbar {
-    background-color: #4eaded;
-    border-color: #4eaded;
+    background-color: #9af289;
+    border-color: #75cd64;
 }
 .navbar-default .second-top-nav{
-    background-color: #0088dc !important;
+    background-color: #6fba60 !important;
     height:43px;
 }
     .navbar-default .second-top-nav a {
@@ -67,14 +67,14 @@ input[type="checkbox"].input-validation-error {
 
 /*styles for left nav bar - start*/
 .left-nav-bar {
-    background-color: #1ba2db;
+    background-color: #7ed66d;
     min-height: 100%;
     position: fixed;
-    margin-top: -14px;
+    margin-top: -4px;
     margin-left:-15px;
 }
 .left-nav-bar a{
-    color:white;
+    color:#29910e;
     text-align:center;
     width:100%;
 }
@@ -278,7 +278,7 @@ div[ng-view].ng-leave-active {
 
 .workout.tile {
     width: 300px;
-    height: 80px;
+    height: 100px;
     background: #5bc0de;
     color: white;
     padding:10px;
@@ -292,6 +292,16 @@ div[ng-view].ng-leave-active {
     font-size: 20pt;
     text-align: center;
 }
+
+.start{
+    font-size: 12pt;
+    text-align: center;
+}
+
+.start:hover {
+    cursor: pointer;
+}
+
 .workout .stats{
     font-size: 12pt;
     padding:0 10px 0 10px;

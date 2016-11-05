@@ -6,8 +6,8 @@ angular.module('fitnes')
             this.title = args.title;
             this.description = args.description;
             this.image = args.image;
-            this.related = {};
-            this.related.videos = args.videos;
+            //this.related = {};
+            this.videos = args.videos;
             this.nameSound = args.nameSound;
             this.procedure = args.procedure;
         }

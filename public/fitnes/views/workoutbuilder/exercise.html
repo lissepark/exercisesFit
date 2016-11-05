@@ -1,6 +1,6 @@
 ﻿<div id="workout-container">
     <div class="row">
-        <h2 class="col-sm-8 col-sm-offset-1">{{exercise.title||'Exercise Title'}} {{formExercise.$dirty?'*':''}}
+        <h2 class="col-sm-8 col-sm-offset-2">{{exercise.title||'Exercise Title'}} {{formExercise.$dirty?'*':''}}
             <!-- <span ng-show="canDeleteWorkout()" class="pull-right glyphicon glyphicon-trash text-danger" title="Delete Workout" ng-confirm="deleteWorkout()" ng-confirm-message="Are you sure you want to delete this workout ?"></span> -->
         </h2>
     </div>
@@ -27,7 +27,7 @@
                 <label for="workout-image">Image:</label>
                 <textarea name="image" class="form-control" id="image" placeholder="Enter exercise image path." ng-model="exercise.image"></textarea>
                 <label for="exercise-image">Exercise Image (Will be scaled to: 540 X 360 px):</label>
-                <img id="img-preview" ng-src="{{exercise.image ? exercise.image : 'fitnes/img/rest.png'}}" style="width:250px;height:250px" /><br />
+                <img id="img-preview" ng-src="fitnes/img/{{exercise.image ? exercise.image : rest.png}}" style="width:250px;height:250px" /><br />
 
                 <input type="file" id="myFile" name="myFile"/>
                 <button ng-click="showFileName()">Show Name</button>
@@ -37,7 +37,7 @@
                 <label for="exercise-videos">Videos:</label>
                 <input name="relatedVideo" class="form-control" ng-model="videos" placeholder="Add a related youtube video identified." required />
                 <ul>
-                    <li ng-repeat="video in exercise.related.videos">
+                    <li ng-repeat="video in exercise.videos">
                         {{video}}
                     </li>
                 </ul>
@@ -48,10 +48,10 @@
                 <div class="row">
                     <label for="exercise-videos">Videos:</label>
                     
-                    <div ng-repeat="video in exercise.related.videos track by $index">
+                    <div ng-repeat="video in exercise.videos track by $index">
                         <ng-form name="videoForm">
                             <div class="form-group form-inline" ng-class="{'has-error':videoForm.relatedVideo.$invalid}">
-                                <input name="relatedVideo" class="form-control" ng-model="exercise.related.videos[$index]" placeholder="Add a related youtube video identified." required />
+                                <input name="relatedVideo" class="form-control" ng-model="exercise.videos[$index]" placeholder="Add a related youtube video identified." required />
                                 <button ng-click="deleteVideo($index)" title="Delete this video." class="btn btn-primary">
                                     <span class="glyphicon glyphicon-trash text-danger"></span>
                                 </button>

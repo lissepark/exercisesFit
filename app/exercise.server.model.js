@@ -25,6 +25,9 @@ var ExerciseSchema = new Schema({
     },
     procedure:{
     	type: String
+    },
+    duration:{
+        type:Number
     }
 });
 

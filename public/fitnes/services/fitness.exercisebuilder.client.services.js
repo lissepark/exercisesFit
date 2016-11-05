@@ -7,12 +7,18 @@ angular.module('WorkoutBuilder').factory("ExerciseBuilderService", ['$resource',
         service.startExerciseBuilding = function (name) {
             //We are going to edit an existing workout
             if (name) {
-                buildingExercise = WorkoutService.getExercise(name);
+                //buildingExercise = WorkoutService.getExercise(name);
+                buildingExercise = Exercises.get({
+                    exerciseId: name
+                    //exerciseId: $routeParams.exerciseId
+                }, function(exercise){
+                    //return exercise;
+                });
                 newExercise = false;
             }
             else {
                 buildingExercise = new Exercises({});
-                //buildingExercise.related.videos = [];
+                buildingExercise.videos = [];
                 newExercise = true;
             }
             return buildingExercise;

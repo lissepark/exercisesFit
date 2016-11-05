@@ -16,10 +16,14 @@ angular.module('WorkoutBuilder').controller('ExercisesNavController', ['$scope',
 angular.module('WorkoutBuilder').controller('ExerciseListController', ['$scope', 'WorkoutService', '$location', 
   function ($scope, WorkoutService, $location) {
       $scope.goto = function (exercise) {
-          $location.path('/builder/exercises/' + exercise.name);
+          $location.path('/builder/exercises/' + exercise._id);
       }
       var init = function () {
+
           $scope.exercises = WorkoutService.getExercises();
+          //WorkoutService.getExercises().$promise.then(function(data){
+          //  $scope.exercises = data;
+          //});
       };
       init();
   }]);
@@ -71,14 +75,13 @@ angular.module('WorkoutBuilder').controller('ExerciseDetailController', ['$scope
       title: this.exercise.title,
       description: this.exercise.description,
       image: this.exercise.image,
-      related: {},
-      videos: this.exercise.related.videos,
+      videos: this.exercise.videos,
       nameSound: this.exercise.nameSound,
-      procedure: this.exercise.procedure
+      procedure: this.exercise.procedure,
+      duration: 30 //chnge to select in the view
     });
-    //$scope.exercise.related.videos = [];
     $scope.exercise.$save(function(response){
-        $location.path('builder/');
+        $location.path('builder/exercises');
     }, function(errorResponse){
         //$scope.error = errorResponse.data.message;
     });
@@ -95,12 +98,12 @@ angular.module('WorkoutBuilder').controller('ExerciseDetailController', ['$scope
   };
 
   $scope.addVideo = function(){
-    $scope.exercise.related.videos.push($scope.videos);
+    $scope.exercise.videos.push($scope.videos);
     //ExerciseBuilderService.addVideo($scope.formExercise.videos);
   };
 
   $scope.deleteVideo = function(index){
-    $scope.exercise.related.videos.splice(index,1);
+    $scope.exercise.videos.splice(index,1);
     //ExerciseBuilderService.addVideo($scope.formExercise.videos);
   };
 
@@ -111,8 +114,7 @@ angular.module('WorkoutBuilder').controller('ExerciseDetailController', ['$scope
 
   var init = function () {
     $scope.exercise = selectedExercise; // Resolved workout
-    $scope.exercise.related = {};
-    $scope.exercise.related.videos = [];
+    $scope.exercise.videos = [];
   };
   init();
 

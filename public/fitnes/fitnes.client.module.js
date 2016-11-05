@@ -3,9 +3,17 @@ angular.module('fitnes', ['ngRoute','ngSanitize','ngAnimate','mediaPlayer','ui.b
 angular.module('fitnes').config(['$routeProvider','$sceDelegateProvider',function($routeProvider, $sceDelegateProvider) {
 	$routeProvider.when('/start', {
 		templateUrl: 'fitnes/views/start.html'
-	}).when('/fitness', {
+	}).when('/fitness/:complexId', {
 		templateUrl: 'fitnes/views/fitness.html',
-		controller: 'FitnesController'
+		controller: 'FitnesController',
+        resolve: {
+            selectedWorkout: ['WorkoutBuilderService', '$route','$location',
+            function (WorkoutBuilderService, $route, $location) {
+                var workout = WorkoutBuilderService.startBuilding($route.current.params.complexId);
+                if (!workout) {$location.path('/start')};
+                return workout;
+            }]
+        }
 	}).when('/finish', {
 		templateUrl: 'fitnes/views/finish.html'
 	}).when('/builder', {
@@ -26,11 +34,11 @@ angular.module('fitnes').config(['$routeProvider','$sceDelegateProvider',functio
         topNav: 'fitnes/views/workoutbuilder/top-nav.html',
         controller: 'WorkoutDetailController',
         resolve: {
-            selectedWorkout: ['WorkoutBuilderService', function (WorkoutBuilderService) {
+            selectedWorkout: ['WorkoutBuilderService', function(WorkoutBuilderService) {
                 return WorkoutBuilderService.startBuilding();
             }]
         }
-    }).when('/builder/workouts/:id', {
+    }).when('/builder/workouts/:complexId', {
         templateUrl: 'fitnes/views/workoutbuilder/workout.html',
         leftNav: 'fitnes/views/workoutbuilder/left-nav-exercises.html',
         topNav: 'fitnes/views/workoutbuilder/top-nav.html',
@@ -38,7 +46,7 @@ angular.module('fitnes').config(['$routeProvider','$sceDelegateProvider',functio
         resolve: {
             selectedWorkout: ['WorkoutBuilderService', '$route','$location',
             function (WorkoutBuilderService, $route, $location) {
-                var workout = WorkoutBuilderService.startBuilding($route.current.params.id);
+                var workout = WorkoutBuilderService.startBuilding($route.current.params.complexId);
                 if (!workout) {$location.path('builder/workouts')};
                 return workout;
             }]
@@ -53,14 +61,14 @@ angular.module('fitnes').config(['$routeProvider','$sceDelegateProvider',functio
                 return exercise;
             }]
         }
-    }).when('/builder/exercises/:id', { 
+    }).when('/builder/exercises/:exerciseId', { 
     	templateUrl: 'fitnes/views/workoutbuilder/exercise.html',
         topNav: 'fitnes/views/workoutbuilder/top-nav.html',
         controller: 'ExerciseDetailController',
         resolve: {
             selectedExercise: ['ExerciseBuilderService', '$route','$location',
             function(ExerciseBuilderService, $route, $location) {
-                var exercise = ExerciseBuilderService.startExerciseBuilding($route.current.params.id);
+                var exercise = ExerciseBuilderService.startExerciseBuilding($route.current.params.exerciseId);
                 if (!exercise) {$location.path('builder/exercises')};
                 return exercise;
             }]

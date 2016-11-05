@@ -5,7 +5,7 @@ angular.module('fitnes').controller('AudioController', ['$scope', '$timeout',
       var workoutPlanwatch = $scope.$watch('workoutPlan', function (newValue, oldValue) {
           if (newValue) {
               angular.forEach($scope.workoutPlan.exercises, function (exercise) {
-                  $scope.exercisesAudio.push({ src: exercise.details.nameSound, type: "audio/wav" });
+                  $scope.exercisesAudio.push({ src: exercise.nameSound, type: "audio/wav" });
               });
               workoutPlanwatch();       //unbind the watch.
           }
@@ -13,7 +13,7 @@ angular.module('fitnes').controller('AudioController', ['$scope', '$timeout',
 
       $scope.$watch('currentExercise', function (newValue, oldValue) {
           if (newValue && newValue != oldValue) {
-              if ($scope.currentExercise.details.name == 'rest') {
+              if ($scope.currentExercise.name == 'rest') {
                   $timeout(function () {
                       $scope.nextUpAudio.play();
                   }, 2000);
@@ -26,7 +26,7 @@ angular.module('fitnes').controller('AudioController', ['$scope', '$timeout',
 
       $scope.$watch('currentExerciseDuration', function (newValue, oldValue) {
           if (newValue) {
-              if (newValue == Math.floor($scope.currentExercise.duration / 2) && $scope.currentExercise.details.name != 'rest') {
+              if (newValue == Math.floor($scope.currentExercise.duration / 2) && $scope.currentExercise.name != 'rest') {
                   $scope.halfWayAudio.play();
               }
               else if (newValue == $scope.currentExercise.duration - 3) {

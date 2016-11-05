@@ -5,20 +5,25 @@ angular.module('WorkoutBuilder').controller('WorkoutListController', ['$scope', 
       $scope.goto = function (workout) {
           $location.path('/builder/workouts/' + workout.name);
       }
+
+      $scope.gotostart = function(workout){
+      	$location.path('/fitness/' + workout.name);
+      };
+
       var init = function () {
           $scope.workouts = WorkoutService.getWorkouts();
       };
       init();
+
   }]);
 
-angular.module('WorkoutBuilder').controller('WorkoutDetailController', ['$scope', 'WorkoutBuilderService', 'selectedWorkout',
-	'$routeParams',function($scope, WorkoutBuilderService, selectedWorkout,$routeParams) {
-		$scope.selected = {};
-
+angular.module('WorkoutBuilder').controller('WorkoutDetailController', ['$scope', 'WorkoutBuilderService', 'selectedWorkout', 'Complex',
+	'$routeParams',function($scope, WorkoutBuilderService, selectedWorkout, Complex, $routeParams) {
+	
 	$scope.removeExercise = function (exercise) {
         WorkoutBuilderService.removeExercise(exercise);
     };
-
+/*
     $scope.moveExerciseTo = function (exercise, location) {
         WorkoutBuilderService.moveExerciseTo(exercise, location);
     };	
@@ -46,27 +51,37 @@ angular.module('WorkoutBuilder').controller('WorkoutDetailController', ['$scope'
 		$scope.formWorkout.$setDirty();
 		$scope.formWorkout.exerciseCount.$setValidity("count", newValue > 0);
 	}});
-
+*/
 	$scope.save = function () {
 		$scope.submitted = true; // Will force validations
 		if ($scope.formWorkout.$invalid) return;
-		$scope.workout = WorkoutBuilderService.save();
-		$scope.formWorkout.$setPristine(); //mark the form pristine after persisting the data to server on save
+		$scope.workout = new Complex({
+	      name: this.workout.name,
+	      title: this.workout.title,
+	      description: this.workout.description,
+	      restBetweenExercise: this.workout.restBetweenExercise,
+	      totalWorkoutDuration: this.workout.totalWorkoutDuration,
+	      exercises: this.workout.exercises
+	    });
+		WorkoutBuilderService.saveComplex();
+		//$scope.formWorkout.$setPristine(); //mark the form pristine after persisting the data to server on save
 		$scope.submitted = false;
 	};
 
 	$scope.hasError = function (modelController, error) {
 		return (modelController.$dirty || $scope.submitted) && error;
 	};
-
+/*
 	$scope.reset = function () {
 		$scope.workout = WorkoutBuilderService.startBuilding($routeParams.id);
 		$scope.formWorkout.$setPristine();
 		$scope.submitted = false;
 	};
-
+*/
 	var init = function () {
 		$scope.workout = selectedWorkout; // Resolved workout
+		//$scope.workout.exercises = [];
+		$scope.workout.totalWorkoutDuration = 0;
 	};
 	init();
 }]);

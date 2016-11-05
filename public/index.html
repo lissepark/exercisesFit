@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Fitness</title>
+    <title>BeFit</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="css/bootstrap/css/bootstrap.css" rel="stylesheet">
@@ -15,7 +15,7 @@
     <div class="navbar navbar-default navbar-fixed-top top-navbar">
         <div class="container-fluid">
             <div class="navbar-header">
-                <div class="navbar-brand">Fitness</div>
+                <div class="navbar-brand">BeFit</div>
             </div>
             <ul class="nav navbar-nav navbar-right">
                 <li><a ng-click="showWorkoutHistory()" title="Workout History">History</a></li>
@@ -31,7 +31,10 @@
             <div class="col-sm-2 left-nav-bar" ng-if="currentRoute.leftNav">
                 <div id="left-nav" ng-include="currentRoute.leftNav"></div>
             </div>
-            <div class="col-sm-10 col-sm-offset-2">
+            <div class="col-sm-10 col-sm-offset-2" ng-if="currentRoute.leftNav">
+                <div id="page-content" ng-view></div>
+            </div>
+            <div class="col-sm-12" ng-if="!currentRoute.leftNav">
                 <div id="page-content" ng-view></div>
             </div>
         </div>

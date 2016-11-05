@@ -1,20 +1,14 @@
-angular.module('fitnes').controller('FitnesController', ['$scope', '$interval', '$location','fitnessHistoryTracker',
-    'appEvents', function($scope,$interval,$location,fitnessHistoryTracker,appEvents){
+angular.module('fitnes').controller('FitnesController', ['$scope', '$interval', '$location',
+    'fitnessHistoryTracker', 'WorkoutBuilderService', 'appEvents', 'selectedWorkout', 'Complex', '$routeParams', 'Exercises', 'Exercise','$timeout', 'WorkoutService',
+    function($scope,$interval,$location,fitnessHistoryTracker, WorkoutBuilderService, appEvents, selectedWorkout,
+        Complex, $routeParams, Exercises, Exercise, $timeout, WorkoutService){
+
+        //var workout = selectedWorkout;
+       
+
 	var restExercise = null;
 	var exerciseIntervalPromise = null;
-
-	function Exercise(args) {
-		this.name = args.name;
-		this.title = args.title;
-		this.description = args.description;
-		this.image = args.image;
-		this.related = {};
-        //this.related.videos = [];
-		this.related.videos = args.videos;
-		this.nameSound = args.nameSound;
-		this.procedure=args.procedure;
-	};
-
+/*
 	function WorkoutPlan(args) {
 		this.exercises = [];
 		this.name = args.name;
@@ -64,7 +58,7 @@ angular.module('fitnes').controller('FitnesController', ['$scope', '$interval', 
                             Then, keeping your back against the wall, lower your hips until your knees form right angles. "
             }),
             duration: 30
-        });/*
+        });
         workout.exercises.push({
             details: new Exercise({
                 name: "pushUp",
@@ -204,17 +198,19 @@ angular.module('fitnes').controller('FitnesController', ['$scope', '$interval', 
                             Keep your hips square and your neck in line with your spine. Hold the position."
             }),
             duration: 30
-        });*/
+        });
 
 		return workout;
 	};
-
+*/
 	var startExercise = function (exercisePlan) {
 		$scope.currentExercise = exercisePlan;
 		$scope.currentExerciseDuration = 0;
-		if (exercisePlan.details.name != 'rest') {
+		if (exercisePlan.name != 'rest') {
               $scope.currentExerciseIndex++;
-              $scope.$emit("event:fitness:exerciseStarted",exercisePlan.details);
+              $scope.$emit("event:fitness:exerciseStarted",exercisePlan.description);
+        }else{
+            $scope.currentExercise.duration = 10;
         };
 /*
 		$interval(function () {
@@ -284,18 +280,19 @@ angular.module('fitnes').controller('FitnesController', ['$scope', '$interval', 
 	};
 
 	var startWorkout = function () {
-		$scope.workoutPlan = createWorkout();
-		$scope.fitnessTimeRemaining = $scope.workoutPlan.totalWorkoutDuration();
-		restExercise = {
-			details: new Exercise({
+		$scope.workoutPlan = $scope.workout;
+		$scope.fitnessTimeRemaining = $scope.workoutPlan.totalWorkoutDuration;
+
+        $scope.exerc = $scope.workoutPlan.exercises[0];
+
+		restExercise = new Exercise({
 				name: "rest",
 				title: " Relax!",
 				description: " Relax a bit!",
-				image: "../img/rest.png"
+				image: "rest.png",
+                duration: 10
 				//procedure: ""
-			}),
-			duration: $scope.workoutPlan.restBetweenExercise
-		};
+		});
 /*
 		$interval(function(){
 			$scope.fitnessTimeRemaining = $scope.fitnessTimeRemaining - 1;
@@ -303,7 +300,7 @@ angular.module('fitnes').controller('FitnesController', ['$scope', '$interval', 
 */
         fitnessHistoryTracker.startTracking();
 		$scope.currentExerciseIndex = -1;
-		startExercise($scope.workoutPlan.exercises[0]);
+		startExercise($scope.exerc);
 	};
 /*
 //we can use watch instead promise
@@ -325,9 +322,14 @@ angular.module('fitnes').controller('FitnesController', ['$scope', '$interval', 
 		}
 	};
 
+
+
 	var init = function () {
-		startWorkout();
-	};
-	init();
+        $scope.workout = selectedWorkout;
+        startWorkout();
+    };
+
+    //$timeout(init,5000);
+    init();
 
 }]);
